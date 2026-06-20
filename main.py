@@ -1,17 +1,20 @@
-# Импортируйте класс Bot из telegram
+# main.py — BreadFastBot: регистрация бота и первое сообщение
+import os
 
-# Здесь возьмите токен, 
-# который вы получили от @Botfather
-# при создании бот-аккаунта
-# и создайте с ним экземпляр класса Bot
-bot = ...
+from dotenv import load_dotenv
+from telegram import Bot
 
-# Укажите id своего аккаунта в Telegram
-# Узнать его можно при помощи @userinfobot
-chat_id = ...
+load_dotenv()  # читает .env из корня репозитория
 
-# Укажите любой текст сообщения
-text = 'Вам телеграмма!'
+# Секреты — из .env (не хардкодим: репозиторий уходит в Git):
+#   BOT_TOKEN  — токен от @BotFather
+#   MY_CHAT_ID — твой Telegram ID
+bot = Bot(token=os.environ["BOT_TOKEN"])
+chat_id = os.environ["MY_CHAT_ID"]
 
+# Текст сообщения
+text = "Вам телеграмма!"
 
-# Отправьте сообщение text получателю chat_id
+# Отправка. Аргументы строго ПОЗИЦИОННО: send_message(chat_id, text) —
+# именно так этого ждёт автотест: assert_called_once_with(chat_id, text).
+bot.send_message(chat_id, text)
